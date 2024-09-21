@@ -5,8 +5,8 @@ export default async function dbConnect() {
 
     try {
         await mongoose.connect(uri, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
+            // useNewUrlParser: true,
+            // useUnifiedTopology: true,
             retryWrites: true,
         });
 
