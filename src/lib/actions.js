@@ -1,14 +1,12 @@
 'use server'
-
+import mongoose from "mongoose";
 import dbConnect from "./dbconfig";
 import {Users} from "@/models/model";
-await dbConnect();
 
 
 export async function createUser(user) {
-   console.log(Users); 
+
     const existingUser = await Users.findOne({ id: user.id });
-    console.log(existingUser,'llll',user)
 
     if (!existingUser) {
         await Users.create({

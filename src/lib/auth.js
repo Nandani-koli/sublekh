@@ -9,7 +9,6 @@ export const authOptions = {
             clientId: process.env.AUTH_GITHUB_ID,
             clientSecret: process.env.AUTH_GITHUB_SECRET,
             profile(profile) {
-                console.log(profile, "pppp")
                 return {
                     id: profile.id.toString(),
                     name: profile.name || profile.login,
@@ -33,6 +32,8 @@ export const authOptions = {
         strategy: "jwt",
     },
 
+    secret: process.env.NEXTAUTH_SECRET,
+
     callbacks: {
         signIn: async ({ user, account, profile }) => {
 
@@ -53,6 +54,11 @@ export const authOptions = {
             };
             return session;
         },
+
+        redirect : async({ url, baseUrl }) => {
+            console.log(baseUrl,url);
+            return '/'
+          }
     },
 
 

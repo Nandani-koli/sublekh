@@ -18,7 +18,11 @@ export default async function middleware(request) {
 
   const path = request.nextUrl.pathname
 
-  const token = await getToken({ req: request });
+  const secret = process.env.NEXTAUTH_SECRET;
+
+  console.log(secret)
+
+  const token = await getToken({ req: request,secret });
   console.log(token,"sdas")
 
   if (token && path == "/login") {
