@@ -2,6 +2,8 @@ import GitHubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 import dbConnect from './dbconfig';
 import { createUser } from './actions';
+import { getServerSession } from 'next-auth';
+
 export const authOptions = {
 
     providers: [
@@ -38,28 +40,40 @@ export const authOptions = {
         signIn: async ({ user, account, profile }) => {
 
             const result = await createUser(user);
-            return result.status;
+            if (result.user) {
+                user.dbUser = result.user; 
+                return true;
+            }
+            return false;
         },
 
         jwt: async ({ token, user }) => {
-            if (user) {
-                token.user = user;
+            if (user?.dbUser) {
+                token.user = user.dbUser; 
             }
             return token;
         },
         session: async ({ session, token }) => {
             session.user = {
-                ...session.user,
-                id: token.sub,
+                _id : token.user._id,
+                id: token.user.id,
+                name: token.user.name,
+                gh_username: token.user.gh_username,
+                email: token.user.email,
+                image: token.user.image,
             };
             return session;
         },
 
-        redirect : async({ url, baseUrl }) => {
-            console.log(baseUrl,url);
-            return '/'
-          }
+        redirect: async ({ url, baseUrl }) => {
+            return '/dashboard'
+        }
     },
 
 
 } 
+
+
+export function getSession() {
+    return getServerSession(authOptions);
+  }
