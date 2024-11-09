@@ -9,7 +9,7 @@ import Link from 'next/link';
 const AllSpaces = async() => {
 
   let spaces = [];
-  const session = await getSession();
+  // const session = await getSession();
   // console.log(session,'pppppppppppp')
 
   //   const {result, spaces} = await getAllSpaces(session.user._id);

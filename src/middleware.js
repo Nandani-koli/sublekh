@@ -20,7 +20,7 @@ export default async function middleware(request) {
 
   const secret = process.env.NEXTAUTH_SECRET;
 
-  console.log(secret)
+  console.log(secret,path,'dasdas')
 
   const token = await getToken({ req: request,secret });
 
