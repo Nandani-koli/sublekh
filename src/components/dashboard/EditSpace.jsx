@@ -6,7 +6,6 @@ import Select from 'react-select'; // For multi-select
 import { isEqual } from 'lodash';
 import { useSession } from 'next-auth/react';
 import { createOrUpdateSpace, getAllSpaces } from '@/lib/actions';
-import { getSession } from '@/lib/auth';
 
 const defaultValues = {
   domainName: '',

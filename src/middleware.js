@@ -23,6 +23,7 @@ export default async function middleware(request) {
   console.log(secret)
 
   const token = await getToken({ req: request,secret });
+
   console.log(token,"sdas")
 
   if (token && path == "/login") {
