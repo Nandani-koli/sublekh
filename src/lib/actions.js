@@ -10,6 +10,8 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET 
   });
 
+dbConnect();
+
 export async function createUser(user) {
 
     const existingUser = await Users.findOne({ id: user.id });
