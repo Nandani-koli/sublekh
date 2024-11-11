@@ -9,15 +9,15 @@ export const authOptions = {
       GitHubProvider({
           clientId: process.env.AUTH_GITHUB_ID,
           clientSecret: process.env.AUTH_GITHUB_SECRET,
-          // profile(profile) {
-          //     return {
-          //         id: profile.id.toString(),
-          //         name: profile.name || profile.login,
-          //         gh_username: profile.login,
-          //         email: profile.email,
-          //         image: profile.avatar_url,
-          //     };
-          // },
+          profile(profile) {
+              return {
+                  id: profile.id.toString(),
+                  name: profile.name || profile.login,
+                  gh_username: profile.login,
+                  email: profile.email,
+                  image: profile.avatar_url,
+              };
+          },
       }),
       // GoogleProvider({
       //   clientId: process.env.GOOGLE_CLIENT_ID,
