@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { getServerSession } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import {createUser} from "@/lib/actions";
 
@@ -75,3 +75,7 @@ export const authOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
+
+export function getSession() {
+    return getServerSession(authOptions);
+  }

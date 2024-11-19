@@ -6,6 +6,7 @@ import Select from 'react-select'; // For multi-select
 import { isEqual } from 'lodash';
 import { useSession } from 'next-auth/react';
 import { createOrUpdateSpace, getAllSpaces } from '@/lib/actions';
+import { useRouter } from 'next/navigation';
 
 const defaultValues = {
   domainName: '',
@@ -29,6 +30,7 @@ const options = [
 const EditSpaceForm = ({userid=null, spaceId = null, defaultData = null }) => {
 
   const { data: session, status } = useSession();
+  const router = useRouter();
 
 
   const [previewData, setPreviewData] = useState(defaultValues);
@@ -91,12 +93,23 @@ const EditSpaceForm = ({userid=null, spaceId = null, defaultData = null }) => {
 
   const onSubmit = async(data) => {
     console.log('Form submitted:', data);
+    if(data.domainName =='app' || data.domainName =='sublekh'){
+      alert('Domain name cannot be app or sublekh')
+      return;
+    }
     if (spaceId) {
       // Handle edit space logic
     } else {
       // Handle create space logic
       const result = await  createOrUpdateSpace(data, session?.user?._id);
       console.log(result,'asdasd')
+      if (result.success) {
+        alert(result.message);
+        router.push('/')
+      }else{
+        alert(result.message);
+      }
+
 
     }
   };

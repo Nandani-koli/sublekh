@@ -20,4 +20,17 @@ const SpaceSchema = new mongoose.Schema({
   });
   
 export const Spaces = mongoose.models.spaces || mongoose.model('spaces', SpaceSchema);
-  
+
+
+const reviewSchema = new mongoose.Schema({
+  spaceId: { type: mongoose.SchemaTypes.ObjectId , ref : 'spaces', required: true },
+  rating: { type: Number, required: true },
+  review: { type: String, required: true },
+  name: { type: String },
+  email: { type: String },
+  social: { type: String },
+  createdAt: { type: Date, default: Date.now },
+});
+
+const Reviews = mongoose.models.reviews || mongoose.model("reviews", reviewSchema);
+export default Reviews;
