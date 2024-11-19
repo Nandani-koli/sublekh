@@ -1,18 +1,17 @@
 
-import { ClipboardIcon, PencilIcon } from '@heroicons/react/outline';
+import { ClipboardIcon, EyeIcon, PencilIcon } from '@heroicons/react/outline';
 import { getAllSpaces } from '@/lib/actions';
 // import { getSession } from '@/lib/auth';
 import Link from 'next/link';
-
-
+import { getSession } from '@/app/api/auth/[...nextauth]/route';
+import CopyBtn from './CopyBtn';
 
 const AllSpaces = async() => {
 
-  let spaces = [];
-  // const session = await getSession();
-  // console.log(session,'pppppppppppp')
+  // let spaces = [];
+  const session = await getSession();
 
-  //   const {result, spaces} = await getAllSpaces(session.user._id);
+    const {result, spaces} = await getAllSpaces(session.user._id);
   
 
   return (
@@ -65,12 +64,10 @@ const AllSpaces = async() => {
               {/* Icons */}
               <div className="flex space-x-4">
                 {/* Copy Icon */}
-                <div>
-                <ClipboardIcon className="h-6 w-6 text-gray-500 hover:text-gray-700 cursor-pointer" />
-                  </div>
+                <CopyBtn spacename={space.domainName}/>
                 {/* Edit Icon */}
-                <Link href={`editspace/${space._id}`}>
-                <PencilIcon className="h-6 w-6 text-gray-500 hover:text-gray-700 cursor-pointer" />
+                <Link href={`spacereviews/${space._id}`}>
+                <EyeIcon className="h-6 w-6 text-gray-500 hover:text-gray-700 cursor-pointer" />
                 </Link>
               </div>
             </div>
