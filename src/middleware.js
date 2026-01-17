@@ -10,7 +10,7 @@ export const config = {
      * 3. /_static (inside /public)
      * 4. all root files inside /public (e.g. /favicon.ico)
      */
-    "/((?!api/|_next/|_static/|_vercel|[\\w-]+\\.\\w+).*)",
+   "/((?!api/auth|api/|_next/|_static/|_vercel|[\\w-]+\\.\\w+).*)",
   ],
 };
 
@@ -40,8 +40,8 @@ console.log('yahahaha ')
     // return NextResponse.rewrite(
     //   new URL(`${path === "/" ? "" : path}`, request.url),
     // );
-    return NextResponse.rewrite(new URL(path, request.url));
-    
+   // return NextResponse.rewrite(new URL(path, request.url));
+     return NextResponse.next(); 
   }
 
    // Handle dynamic subdomains
