@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import PreviewForm from './PreviewForm'; // Import the Preview component
 import Select from 'react-select'; // For multi-select
-import { isEqual } from 'lodash';
 import { useSession } from 'next-auth/react';
 import { createOrUpdateSpace, getAllSpaces } from '@/lib/actions';
 import { useRouter } from 'next/navigation';
@@ -35,39 +34,26 @@ const EditSpaceForm = ({userid=null, spaceId = null, defaultData = null }) => {
 
   const [previewData, setPreviewData] = useState(defaultValues);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [spaceData, setSpaceData] = useState(null)
+  const [isClient, setIsClient] = useState(false);
 
-  const { register, control, handleSubmit, watch, setValue, formState: { errors } } = useForm({
+  // Ensure we only run on client side after hydration
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const { register, control, handleSubmit, watch, setValue, reset, formState: { errors } } = useForm({
     defaultValues: defaultData || defaultValues,
   });
 
+  // Initialize form with defaultData when component mounts
   useEffect(() => {
-
-    let getspace = async() => {
-
-      const {space} = await getAllSpaces(null,spaceId);
-      console.log(space)
-      setSpaceData(space)
+    if (isClient && defaultData) {
+      reset(defaultData);
+      setPreviewData(defaultData);
     }
-
-    if(spaceId && !spaceData)
-    {
-      console.log(spaceId,'dfsd')
-      getspace();
-    }
-  
-  },[spaceId])
+  }, [isClient, defaultData, reset]);
 
   const watchFields = watch();
-
-  const prevWatchFields = useRef(watchFields);
-
-  useEffect(() => {
-    if (!isEqual(prevWatchFields.current, watchFields)) {
-      setPreviewData(watchFields);
-      prevWatchFields.current = watchFields;
-    }
-  }, [watchFields]);
 
   // Logo Preview State
   const [logoPreview, setLogoPreview] = useState(defaultData?.logo || '');
@@ -125,7 +111,7 @@ const EditSpaceForm = ({userid=null, spaceId = null, defaultData = null }) => {
       {/* Form Section */}
       <div className="bg-gray-50 p-6 rounded-lg shadow-lg">
         <h2 className="text-xl font-semibold text-black mb-4">Edit Space</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} onChange={() => setPreviewData(watch())}>
           {/* Domain Name */}
           <div className="mb-4">
             <label className="block text-black font-medium">Domain Name</label>
